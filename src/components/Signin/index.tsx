@@ -55,19 +55,9 @@ function SignIn() {
     }
   };
 
-  // const excuteCreationAdmin = async () => {
-  //   try {
-  //     await createAdmin();
-  //     alert("admin 생성 완료");
-  //   } catch (e) {
-  //     console.error(e);
-  //     alert(e);
-  //   }
-  // };
-
   return (
     <div className="flex flex-col items-center p-10 gap-10">
-      <h1 className="text-3xl font-bold">Sign in</h1>
+      <h1 className="text-3xl font-bold mt-16">LogIn</h1>
 
       <Form {...methods}>
         <form
@@ -91,21 +81,20 @@ function SignIn() {
           />
 
           <Button
-            className="w-[50%] bg-orange-500 hover:bg-orange-800"
+            className="w-[50%] bg-blue-300 hover:bg-blue-400 text-blue-700 font-semibold"
             disabled={isLoading}
           >
             로그인
           </Button>
         </form>
       </Form>
-      {/* <Button onClick={excuteCreationAdmin}>Admin 생성</Button> */}
       <div className="mt-10">
         <p className="text-sm">
-          방문자용 아이디:{" "}
+          기본 아이디:{" "}
           <span className="text-base font-bold">admin@admin.com</span>
         </p>
         <p className="text-sm">
-          방문자용 비밀번호:{" "}
+          기본 비밀번호:{" "}
           <span className="text-base font-bold">admin1234!@#$</span>
         </p>
       </div>

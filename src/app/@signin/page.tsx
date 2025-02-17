@@ -2,7 +2,7 @@ import SignIn from "@/components/Signin";
 
 function SignPage() {
   return (
-    <main className="h-screen p-5 bg-blue-50">
+    <main className="min-h-screen p-5 bg-blue-50">
       <SignIn />
     </main>
   );
