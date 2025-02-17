@@ -1,0 +1,14 @@
+version: "3"
+services:
+  db:
+    container_name: amusedb
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: amuse
+      POSTGRES_PASSWORD: amuse
+      POSTGRES_DB: amusedb
