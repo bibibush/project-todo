@@ -34,6 +34,7 @@ model Task {
   category  Category
   expireDate  DateTime
   done  Boolean
+  checkList Json?
   userId  String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

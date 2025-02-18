@@ -28,7 +28,15 @@ function CompletedHeader({ count }: CompletedHeaderProps) {
           <p className="text-xl">...</p>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <Link href={`/create?category=COMPLETED`}>
+          <Link
+            href={{
+              pathname: "/create",
+              query: {
+                category: "COMPLETED",
+              },
+            }}
+            as="/create"
+          >
             <DropdownMenuItem>생성하기</DropdownMenuItem>
           </Link>
           <DropdownMenuItem>날짜 내림차순으로 정렬</DropdownMenuItem>

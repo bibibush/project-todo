@@ -1,4 +1,4 @@
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
 import Main from "@/components/Main";
 import getTasks from "@/serverActions/getTasks";
 import {
@@ -11,14 +11,6 @@ export default async function HomePage() {
   const queryClient = new QueryClient();
   const session = await auth();
   const userId = session?.user?.id;
-  async function logOut() {
-    "use server";
-    await signOut();
-  }
-
-  if (!userId) {
-    await logOut();
-  }
 
   await queryClient.prefetchQuery({
     queryKey: ["tasks", userId],

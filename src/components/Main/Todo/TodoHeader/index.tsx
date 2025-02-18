@@ -28,7 +28,12 @@ function TodoHeader({ count }: TodoHeaderProps) {
           <p className="text-xl">...</p>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <Link href={`/create?category=TODO`}>
+          <Link
+            href={{
+              pathname: "/create",
+              query: { category: "TODO" },
+            }}
+          >
             <DropdownMenuItem>생성하기</DropdownMenuItem>
           </Link>
           <DropdownMenuItem>날짜 내림차순으로 정렬</DropdownMenuItem>

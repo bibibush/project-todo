@@ -28,7 +28,12 @@ function ProgressHeader({ count }: ProgressHeaderProps) {
           <p className="text-xl">...</p>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <Link href={`/create?category=PROGRESS`}>
+          <Link
+            href={{
+              pathname: "/create",
+              query: { category: "PROGRESS" },
+            }}
+          >
             <DropdownMenuItem>생성하기</DropdownMenuItem>
           </Link>
           <DropdownMenuItem>날짜 내림차순으로 정렬</DropdownMenuItem>
