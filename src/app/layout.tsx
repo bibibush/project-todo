@@ -25,7 +25,18 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <main
+          className="h-screen p-3 opacity-90"
+          style={{
+            backgroundImage: "url(/hahoe.jpg)",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+          }}
+        >
+          {children}
+        </main>
+      </body>
     </html>
   );
 }

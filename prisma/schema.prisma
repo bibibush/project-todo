@@ -18,4 +18,31 @@ model User {
   email String  @unique
   hashedPassword  String
   name  String?
+  task  Task[]
+}
+
+enum Category {
+  TODO
+  PROGRESS
+  COMPLETED
+}
+
+model Task {
+  id  String  @id @default(cuid())
+  title String
+  description String?
+  category  Category
+  expireDate  DateTime
+  done  Boolean
+  userId  String
+  tagId String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tag Tag? @relation(fields: [tagId],references: [id])
+}
+
+model Tag {
+  id  String  @id @default(cuid())
+  tag String
+  task  Task[]
 }
