@@ -1,9 +1,25 @@
+import Completeds from "@/types/Completeds";
 import CompletedHeader from "./CompletedHeader";
+import Task from "@/components/Task";
 
-function Completed() {
+interface CompletedProps {
+  completeds: Completeds[];
+}
+
+function Completed({ completeds }: CompletedProps) {
   return (
     <div className="flex flex-col w-[350px] items-center">
-      <CompletedHeader />
+      <CompletedHeader count={completeds.length} />
+
+      {!!completeds.length &&
+        completeds.map((com) => (
+          <Task
+            key={com.id}
+            title={com.title}
+            description={com.description}
+            expireDate={com.expireDate}
+          />
+        ))}
     </div>
   );
 }

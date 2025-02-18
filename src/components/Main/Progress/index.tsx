@@ -1,9 +1,25 @@
+import Progresses from "@/types/Progresses";
 import ProgressHeader from "./ProgressHeader";
+import Task from "@/components/Task";
 
-function Progress() {
+interface ProgressProps {
+  progresses: Progresses[];
+}
+
+function Progress({ progresses }: ProgressProps) {
   return (
     <div className="flex flex-col w-[350px] items-center">
-      <ProgressHeader />
+      <ProgressHeader count={progresses.length} />
+
+      {!!progresses.length &&
+        progresses.map((progress) => (
+          <Task
+            key={progress.id}
+            title={progress.title}
+            description={progress.description}
+            expireDate={progress.expireDate}
+          />
+        ))}
     </div>
   );
 }

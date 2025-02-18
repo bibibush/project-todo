@@ -1,7 +1,18 @@
 import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
-function CompletedHeader() {
+interface CompletedHeaderProps {
+  count: number;
+}
+
+function CompletedHeader({ count }: CompletedHeaderProps) {
   return (
     <div
       className={cn(
@@ -10,9 +21,19 @@ function CompletedHeader() {
     >
       <span className="flex gap-3">
         <p className="text-xl">완료</p>
-        <Badge variant="outline">2</Badge>
+        <Badge variant="outline">{count}</Badge>
       </span>
-      <p className="text-xl">...</p>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <p className="text-xl">...</p>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <Link href={`/create?category=COMPLETED`}>
+            <DropdownMenuItem>생성하기</DropdownMenuItem>
+          </Link>
+          <DropdownMenuItem>날짜 내림차순으로 정렬</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

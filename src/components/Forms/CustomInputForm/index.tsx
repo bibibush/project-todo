@@ -18,6 +18,7 @@ interface CustomInputFormProps<T extends FieldValues> {
   label?: string;
   rules?: RegisterOptions<T>;
   isPassword?: boolean;
+  placeholder?: string;
 }
 
 function CustomInputForm<T extends FieldValues>({
@@ -27,6 +28,7 @@ function CustomInputForm<T extends FieldValues>({
   label,
   rules,
   isPassword,
+  placeholder,
 }: CustomInputFormProps<T>) {
   return (
     <FormField
@@ -40,6 +42,7 @@ function CustomInputForm<T extends FieldValues>({
             <Input
               type={isPassword ? "password" : "text"}
               className={cn("bg-white", className)}
+              placeholder={placeholder}
               {...field}
             />
           </FormControl>

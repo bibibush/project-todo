@@ -1,7 +1,18 @@
 import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
-function TodoHeader() {
+interface TodoHeaderProps {
+  count: number;
+}
+
+function TodoHeader({ count }: TodoHeaderProps) {
   return (
     <div
       className={cn(
@@ -10,9 +21,19 @@ function TodoHeader() {
     >
       <span className="flex gap-3">
         <p className="text-xl">TODO</p>
-        <Badge variant="outline">2</Badge>
+        <Badge variant="outline">{count}</Badge>
       </span>
-      <p className="text-xl">...</p>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <p className="text-xl">...</p>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <Link href={`/create?category=TODO`}>
+            <DropdownMenuItem>생성하기</DropdownMenuItem>
+          </Link>
+          <DropdownMenuItem>날짜 내림차순으로 정렬</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

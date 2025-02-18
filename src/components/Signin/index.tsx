@@ -57,7 +57,7 @@ function SignIn() {
 
   return (
     <div className="flex flex-col items-center p-10 gap-10">
-      <h1 className="text-3xl font-bold mt-16">LogIn</h1>
+      <h1 className="text-3xl font-bold mt-16">Log In</h1>
 
       <Form {...methods}>
         <form
