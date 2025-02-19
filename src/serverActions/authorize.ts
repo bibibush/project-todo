@@ -1,22 +1,16 @@
 "use server";
 
 import { auth } from "@/auth";
-import ErrorResponse from "@/types/ErrorResponse";
 
-export default async function authorize(): Promise<string> {
-  const error: ErrorResponse = Object.assign(new Error("unauthorized"), {
-    status: 401,
-    statusText: "unauthorized",
-  });
-
+export default async function authorize(): Promise<string | null> {
   const session = await auth();
   if (!session) {
-    return Promise.reject(error);
+    return null;
   }
 
   const userId = session.user?.id;
   if (!userId) {
-    return Promise.reject(error);
+    return null;
   }
 
   return userId;

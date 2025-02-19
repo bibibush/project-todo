@@ -8,7 +8,7 @@ interface CompletedProps {
 
 function Completed({ completeds }: CompletedProps) {
   return (
-    <div className="flex flex-col w-[350px] items-center">
+    <div className="flex flex-col w-[350px] items-center gap-3 min-h-full">
       <CompletedHeader count={completeds.length} />
 
       {!!completeds.length &&
