@@ -18,6 +18,7 @@ import { Category } from "@prisma/client";
 import revalidate from "@/serverActions/revalidate";
 import useGetTask from "@/hooks/useGetTask";
 import updateTask from "@/serverActions/updateTask";
+import { cn } from "@/lib/utils";
 
 interface CreatePageProps {
   isModify?: boolean;
@@ -59,6 +60,7 @@ function CreatePage({ isModify, taskId }: CreatePageProps) {
   const [date, setDate] = useState<Date | undefined>(
     add(new Date(), { days: 7 })
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSelect = useCallback((value: Selected) => {
     setSelected(value);
@@ -77,6 +79,7 @@ function CreatePage({ isModify, taskId }: CreatePageProps) {
 
   const submitForm = async (data: CreateParams) => {
     try {
+      setIsLoading(true);
       const postObject = {
         ...data,
         category: Selected[selected] as Category,
@@ -98,6 +101,7 @@ function CreatePage({ isModify, taskId }: CreatePageProps) {
       await revalidate();
       router.replace("/");
     } catch (e) {
+      setIsLoading(false);
       console.error(e);
     }
   };
@@ -115,7 +119,7 @@ function CreatePage({ isModify, taskId }: CreatePageProps) {
     setDate(data.expireDate);
 
     const checkList = data.checkList;
-    if (!!checkList) {
+    if (checkList) {
       const parsedCheckList = JSON.parse(
         checkList as string
       ) as CheckListType[];
@@ -167,13 +171,22 @@ function CreatePage({ isModify, taskId }: CreatePageProps) {
               {...methods.register("description")}
             />
 
-            <div className="fixed bottom-10 2xl:right-[270px] 3xl:right-[400px] 4xl:right-[480px] flex items-center gap-3">
+            <div
+              className={cn(
+                "fixed bottom-10 2xl:right-[200px] 3.5xl:right-[270px]",
+                "3xl:right-[400px] 4xl:right-[480px] flex items-center gap-3"
+              )}
+            >
               <Link href="/">
-                <Button type="button" variant="destructive">
+                <Button
+                  type="button"
+                  variant="destructive"
+                  disabled={isLoading}
+                >
                   취소
                 </Button>
               </Link>
-              <Button type="submit" variant="primaryBlue">
+              <Button type="submit" variant="primaryBlue" disabled={isLoading}>
                 저장
               </Button>
             </div>

@@ -18,7 +18,8 @@ function TodoHeader({ count, isAsc, setAsc }: TodoHeaderProps) {
   return (
     <div
       className={cn(
-        "bg-white rounded-t-md flex items-center justify-between w-full p-3 border-b-[3px] border-[#1E293B] sticky top-0"
+        "bg-white rounded-t-md flex items-center justify-between w-full p-3 border-b-[3px] border-[#1E293B] sticky top-0",
+        "shadow-sm shadow-black/70"
       )}
     >
       <span className="flex gap-3">

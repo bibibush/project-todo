@@ -1,7 +1,7 @@
 import Progresses from "@/types/Progresses";
 import ProgressHeader from "./ProgressHeader";
 import Task from "@/components/Task";
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface ProgressProps {
   progresses: Progresses[];
@@ -44,4 +44,4 @@ function Progress({ progresses, refetch }: ProgressProps) {
   );
 }
 
-export default Progress;
+export default React.memo(Progress);

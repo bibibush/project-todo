@@ -1,7 +1,7 @@
 import Completeds from "@/types/Completeds";
 import CompletedHeader from "./CompletedHeader";
 import Task from "@/components/Task";
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface CompletedProps {
   completeds: Completeds[];
@@ -44,4 +44,4 @@ function Completed({ completeds, refetch }: CompletedProps) {
   );
 }
 
-export default Completed;
+export default React.memo(Completed);

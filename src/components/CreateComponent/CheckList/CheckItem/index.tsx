@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { CheckListType } from "../..";
 import { ChangeEvent } from "react";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 interface CheckItemProps {
   id: string;
@@ -46,6 +47,17 @@ function CheckItem({
     onChangeCheckList(newObject);
   };
 
+  const handleDeleteCheckList = () => {
+    const newObject = [...checkList];
+    const checkToDelete = newObject.find((check) => check.id === id);
+    if (!checkToDelete) {
+      return;
+    }
+
+    const resultList = newObject.filter((obj) => obj.id !== checkToDelete.id);
+    onChangeCheckList(resultList);
+  };
+
   return (
     <div className="flex gap-4 items-center text-lg">
       <Checkbox
@@ -63,6 +75,10 @@ function CheckItem({
         }
         value={label}
         onChange={handleChangeInputValue}
+      />
+      <FaRegTrashAlt
+        className="cursor-pointer"
+        onClick={handleDeleteCheckList}
       />
     </div>
   );

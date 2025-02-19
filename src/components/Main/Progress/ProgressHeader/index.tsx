@@ -18,7 +18,8 @@ function ProgressHeader({ count, isAsc, setAsc }: ProgressHeaderProps) {
   return (
     <div
       className={cn(
-        "bg-white rounded-t-md flex items-center w-full justify-between p-3 border-b-[3px] border-[#306BFF] sticky top-0"
+        "bg-white rounded-t-md flex items-center w-full justify-between p-3 border-b-[3px] border-[#306BFF] sticky top-0",
+        "shadow-sm shadow-black/70"
       )}
     >
       <span className="flex gap-3">

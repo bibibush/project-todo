@@ -1,7 +1,7 @@
 import Task from "@/components/Task";
 import TodoHeader from "./TodoHeader";
 import Todos from "@/types/Todos";
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface TodoProps {
   todos: Todos[];
@@ -39,4 +39,4 @@ function Todo({ todos, refetch }: TodoProps) {
   );
 }
 
-export default Todo;
+export default React.memo(Todo);
