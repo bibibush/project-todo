@@ -167,7 +167,7 @@ function CreatePage({ isModify, taskId }: CreatePageProps) {
               {...methods.register("description")}
             />
 
-            <div className="fixed bottom-10 2xl:right-[270px] 3xl:right-[400px] flex items-center gap-3">
+            <div className="fixed bottom-10 2xl:right-[270px] 3xl:right-[400px] 4xl:right-[480px] flex items-center gap-3">
               <Link href="/">
                 <Button type="button" variant="destructive">
                   취소
