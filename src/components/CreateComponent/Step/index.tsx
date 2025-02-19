@@ -12,6 +12,10 @@ interface StepProps {
 
 function Step({ category, selected, onSelect }: StepProps) {
   useEffect(() => {
+    if (!category) {
+      return;
+    }
+
     let value = 1;
     switch (category) {
       case "TODO":

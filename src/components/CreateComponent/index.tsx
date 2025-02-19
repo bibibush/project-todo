@@ -6,7 +6,7 @@ import { Form } from "../ui/form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Textarea } from "../ui/textarea";
 import CheckList from "./CheckList";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Calendar } from "../ui/calendar";
 import { ko } from "date-fns/locale";
 import { Button } from "../ui/button";
@@ -16,6 +16,13 @@ import { add, format } from "date-fns";
 import createTask from "@/serverActions/createTask";
 import { Category } from "@prisma/client";
 import revalidate from "@/serverActions/revalidate";
+import useGetTask from "@/hooks/useGetTask";
+import updateTask from "@/serverActions/updateTask";
+
+interface CreatePageProps {
+  isModify?: boolean;
+  taskId?: string;
+}
 
 interface CreateParams {
   title: string;
@@ -34,14 +41,19 @@ export enum Selected {
   COMPLETED,
 }
 
-function CreatePage() {
+function CreatePage({ isModify, taskId }: CreatePageProps) {
   const param = useSearchParams();
   const category = param.get("category");
 
   const router = useRouter();
 
+  const { data } = useGetTask(
+    { taskId: taskId ?? "" },
+    { enabled: !!taskId && isModify }
+  );
+
   const [checkListData, setCheckListData] = useState<Array<CheckListType>>([
-    { id: `check-${1}`, done: false, label: "테스트" },
+    { id: `check-${1}`, done: false, label: "새로 할 일" },
   ]);
   const [selected, setSelected] = useState<Selected>(Selected.TODO);
   const [date, setDate] = useState<Date | undefined>(
@@ -73,6 +85,15 @@ function CreatePage() {
         checkList: checkListData,
       };
 
+      if (isModify) {
+        const putObject = { ...postObject };
+
+        await updateTask(taskId, putObject);
+        await revalidate();
+        router.replace("/");
+        return;
+      }
+
       await createTask(postObject);
       await revalidate();
       router.replace("/");
@@ -80,6 +101,45 @@ function CreatePage() {
       console.error(e);
     }
   };
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    methods.reset({
+      title: data.title,
+      description: data.description ?? "",
+    });
+
+    setDate(data.expireDate);
+
+    const checkList = data.checkList;
+    if (!!checkList) {
+      const parsedCheckList = JSON.parse(
+        checkList as string
+      ) as CheckListType[];
+      const reformedCheckList = parsedCheckList.map((check, index) => ({
+        id: `check-${index + 1}`,
+        done: check.done,
+        label: check.label,
+      }));
+
+      setCheckListData(reformedCheckList);
+    }
+
+    switch (data.category) {
+      case "TODO":
+        setSelected(Selected.TODO);
+        break;
+      case "PROGRESS":
+        setSelected(Selected.PROGRESS);
+        break;
+      case "COMPLETED":
+        setSelected(Selected.COMPLETED);
+        break;
+    }
+  }, [methods, data]);
 
   return (
     <div className="p-5 flex justify-between items-start min-h-full">

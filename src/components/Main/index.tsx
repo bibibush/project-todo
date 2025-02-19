@@ -12,7 +12,7 @@ interface MainProps {
 }
 
 function Main({ userId }: MainProps) {
-  const { data } = useGetTasks({ userId }, { enabled: !!userId });
+  const { data, refetch } = useGetTasks({ userId }, { enabled: !!userId });
 
   const todos = useMemo(() => {
     return data?.filter((d) => d.category === "TODO") ?? [];
@@ -36,9 +36,9 @@ function Main({ userId }: MainProps) {
         <h1>Admin님의 프로젝트</h1>
 
         <div className="flex justify-between gap-2">
-          <Todo todos={todos} />
-          <Progress progresses={progresses} />
-          <Completed completeds={completeds} />
+          <Todo todos={todos} refetch={refetch} />
+          <Progress progresses={progresses} refetch={refetch} />
+          <Completed completeds={completeds} refetch={refetch} />
         </div>
       </div>
     </section>

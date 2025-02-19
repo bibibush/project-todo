@@ -10,9 +10,11 @@ import Link from "next/link";
 
 interface TodoHeaderProps {
   count: number;
+  isAsc: boolean;
+  setAsc: () => void;
 }
 
-function TodoHeader({ count }: TodoHeaderProps) {
+function TodoHeader({ count, isAsc, setAsc }: TodoHeaderProps) {
   return (
     <div
       className={cn(
@@ -36,7 +38,9 @@ function TodoHeader({ count }: TodoHeaderProps) {
           >
             <DropdownMenuItem>생성하기</DropdownMenuItem>
           </Link>
-          <DropdownMenuItem>날짜 내림차순으로 정렬</DropdownMenuItem>
+          <DropdownMenuItem onClick={setAsc}>
+            {isAsc ? "날짜 내림차순으로 정렬" : "날짜 오름차순으로 정렬"}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
