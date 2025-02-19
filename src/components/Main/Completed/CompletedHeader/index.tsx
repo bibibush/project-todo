@@ -35,7 +35,6 @@ function CompletedHeader({ count }: CompletedHeaderProps) {
                 category: "COMPLETED",
               },
             }}
-            as="/create"
           >
             <DropdownMenuItem>생성하기</DropdownMenuItem>
           </Link>

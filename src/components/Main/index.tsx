@@ -4,7 +4,8 @@ import useGetTasks from "@/hooks/useGetTasks";
 import Completed from "./Completed";
 import Progress from "./Progress";
 import Todo from "./Todo";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { signOut } from "next-auth/react";
 
 interface MainProps {
   userId: string;
@@ -22,6 +23,12 @@ function Main({ userId }: MainProps) {
   const completeds = useMemo(() => {
     return data?.filter((d) => d.category === "COMPLETED") ?? [];
   }, [data]);
+
+  useEffect(() => {
+    if (!userId) {
+      signOut({ redirect: true, redirectTo: "/" });
+    }
+  }, [userId]);
 
   return (
     <section className="bg-white rounded-2xl mt-10 h-[90%] w-[1200px] bg-opacity-80 overflow-y-hidden">

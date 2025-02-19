@@ -22,7 +22,7 @@ function LogOutModal({ isOpen, onClose }: LogOutModalProps) {
 
   const handleSignOut = () => {
     setLoading(true);
-    signOut({ redirect: true, callbackUrl: "/" });
+    signOut({ redirect: true, redirectTo: "/" });
   };
 
   return (

@@ -1,6 +1,6 @@
 "use server";
 
-import { auth, signOut } from "@/auth";
+import { auth } from "@/auth";
 import ErrorResponse from "@/types/ErrorResponse";
 
 export default async function authorize(): Promise<string> {
@@ -11,13 +11,11 @@ export default async function authorize(): Promise<string> {
 
   const session = await auth();
   if (!session) {
-    await signOut();
     return Promise.reject(error);
   }
 
   const userId = session.user?.id;
   if (!userId) {
-    await signOut();
     return Promise.reject(error);
   }
 

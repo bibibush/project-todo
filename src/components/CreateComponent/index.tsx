@@ -6,11 +6,12 @@ import { Form } from "../ui/form";
 import { useSearchParams } from "next/navigation";
 import { Textarea } from "../ui/textarea";
 import CheckList from "./CheckList";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Calendar } from "../ui/calendar";
 import { ko } from "date-fns/locale";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import Step from "./Step";
 
 interface CreateParams {
   title: string;
@@ -23,6 +24,12 @@ export interface CheckListType {
   label: string;
 }
 
+export enum Selected {
+  TODO = 1,
+  PROGRESS,
+  COMPLETED,
+}
+
 function CreatePage() {
   const param = useSearchParams();
   const category = param.get("category");
@@ -30,6 +37,11 @@ function CreatePage() {
   const [checkListData, setCheckListData] = useState<Array<CheckListType>>([
     { id: `check-${1}`, done: false, label: "테스트" },
   ]);
+  const [selected, setSelected] = useState<Selected>(Selected.TODO);
+
+  const handleSelect = useCallback((value: Selected) => {
+    setSelected(value);
+  }, []);
 
   const changeCheckListData = (checkList: CheckListType[]) => {
     setCheckListData(checkList);
@@ -44,7 +56,6 @@ function CreatePage() {
 
   const submitForm = (data: CreateParams) => {
     console.log(data);
-    console.log(category);
   };
 
   return (
@@ -81,9 +92,14 @@ function CreatePage() {
         />
       </div>
 
-      <div className="w-[400px] flex items-center justify-center">
-        <Calendar className="bg-white rounded-xl" locale={ko} />
+      <div className="flex flex-col items-center gap-6">
+        <Step category={category} selected={selected} onSelect={handleSelect} />
+
+        <div className="w-[400px] flex items-center justify-center mt-14">
+          <Calendar className="bg-white rounded-xl" locale={ko} />
+        </div>
       </div>
+
       <div className="absolute bottom-10 2xl:right-[270px] 3xl:right-[400px] flex items-center gap-3">
         <Link href="/">
           <Button variant="destructive">취소</Button>

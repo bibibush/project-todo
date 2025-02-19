@@ -55,7 +55,7 @@ function CheckItem({
         className="size-6"
       />
       <Input
-        className="cursor-pointer bg-transparent border-0 h-8"
+        className="bg-transparent border-0 h-8"
         style={
           done
             ? { textDecorationLine: "line-through", fontSize: "18px" }

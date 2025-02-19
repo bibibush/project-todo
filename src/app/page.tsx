@@ -10,7 +10,8 @@ import {
 export default async function HomePage() {
   const queryClient = new QueryClient();
   const session = await auth();
-  const userId = session?.user?.id;
+
+  const userId = session?.user?.id ?? "";
 
   await queryClient.prefetchQuery({
     queryKey: ["tasks", userId],
@@ -19,7 +20,7 @@ export default async function HomePage() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Main userId={userId ?? ""} />
+      <Main userId={userId} />
     </HydrationBoundary>
   );
 }
