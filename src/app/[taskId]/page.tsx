@@ -1,29 +1,29 @@
-import { auth } from "@/auth";
+// import { auth } from "@/auth";
 import CreateComponent from "@/components/CreateComponent";
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 import getTask from "@/serverActions/getTask";
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 
 async function TaskId({ params }: { params: Promise<{ taskId: string }> }) {
-  const session = await auth();
-  if (!session) {
-    redirect("/");
-  }
+  // const session = await auth();
+  // if (!session) {
+  //   redirect("/");
+  // }
 
   const taskId = (await params).taskId;
-  const task = await prisma.task.findUnique({
-    where: {
-      id: taskId,
-    },
-  });
-  if (!task) {
-    redirect("/");
-  }
+  // const task = await prisma.task.findUnique({
+  //   where: {
+  //     id: taskId,
+  //   },
+  // });
+  // if (!task) {
+  //   redirect("/");
+  // }
 
   const queryClient = new QueryClient();
 
