@@ -2,7 +2,7 @@ FROM node:20
 
 WORKDIR /app
 COPY . .
-RUN npm install
+RUN npm install --force
 RUN npx prisma migrate deploy
 RUN npx prisma generate 
 RUN npm run build
