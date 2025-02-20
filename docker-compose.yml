@@ -15,7 +15,7 @@ services:
 
   next:
     container_name: nextjs-app
-    build: project_todo_image
+    image: project_todo_image
     restart: always
     ports:
       - "3000:3000"
