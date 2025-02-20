@@ -14,9 +14,10 @@ import Link from "next/link";
 
 interface MainProps {
   userId: string;
+  userName: string;
 }
 
-function Main({ userId }: MainProps) {
+function Main({ userId, userName }: MainProps) {
   const { data, refetch } = useGetTasks({ userId }, { enabled: !!userId });
 
   const [inputValue, setInputValue] = useState<string>("");
@@ -66,7 +67,10 @@ function Main({ userId }: MainProps) {
     <section className="bg-white rounded-2xl mt-10 h-[90%] w-[1200px] bg-opacity-80 overflow-y-hidden">
       <div className="overflow-y-auto m-3 h-[calc(100%-12px-12px)] px-2">
         <div className="flex items-center gap-5">
-          <h1>Admin님의 프로젝트</h1>
+          <h1>
+            {userName.length > 5 ? `${userName.slice(0, 5)}...` : userName}님의
+            프로젝트
+          </h1>
 
           <div className="relative flex items-center justify-between flex-1">
             <Link href="/create">

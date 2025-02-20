@@ -17,6 +17,7 @@ export default async function RootLayout({
   signin: React.ReactNode;
 }>) {
   const session = await auth();
+  const userName = session?.user?.name ?? "";
   if (!session) {
     return (
       <html lang="ko">
@@ -38,7 +39,7 @@ export default async function RootLayout({
             }}
           >
             <section className="flex flex-col items-center h-full">
-              <Header />
+              <Header userName={userName} />
               {children}
             </section>
           </main>

@@ -5,6 +5,8 @@ import CustomInputForm from "../Forms/CustomInputForm";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import { useState } from "react";
+import registerUser from "@/serverActions/registerUser";
+import { useRouter } from "next/navigation";
 
 interface RegisterParams {
   email: string;
@@ -14,6 +16,8 @@ interface RegisterParams {
 }
 
 function Register() {
+  const router = useRouter();
+
   const methods = useForm<RegisterParams>({
     defaultValues: {
       email: "",
@@ -54,9 +58,23 @@ function Register() {
       value === methods.getValues("password1") || "비밀번호 값이 다릅니다.",
   };
 
-  const submitToRegister = (data: RegisterParams) => {
-    setLoading(true);
-    console.log(data);
+  const submitToRegister = async (data: RegisterParams) => {
+    try {
+      setLoading(true);
+      const body = {
+        email: data.email,
+        name: data.name,
+        password: data.password2,
+      };
+      await registerUser(body);
+      alert("회원가입이 성공적으로 완료되었습니다.");
+      router.replace("/");
+    } catch (e) {
+      if (e instanceof Error) {
+        alert(e.message);
+        setLoading(false);
+      }
+    }
   };
 
   return (

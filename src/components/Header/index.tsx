@@ -10,7 +10,11 @@ import {
 import { MdLogout } from "react-icons/md";
 import LogOutModal from "../modals/LogOutModal";
 
-function Header() {
+interface HeaderProps {
+  userName: string;
+}
+
+function Header({ userName }: HeaderProps) {
   const [isLogOutModalOpen, setIsLogOutModalOpen] = useState<boolean>(false);
 
   const handleCloseModal = () => {
@@ -25,7 +29,7 @@ function Header() {
       <DropdownMenu>
         <DropdownMenuTrigger>
           <div className="rounded-xl py-3 px-5 font-bold bg-blue-100">
-            Admin
+            {userName.length > 5 ? `${userName.slice(0, 5)}...` : userName}
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
