@@ -19,6 +19,8 @@ services:
     restart: always
     ports:
       - "3000:3000"
+    volumes:
+      - ./.next:/app/.next/
     depends_on:
       - db
 
