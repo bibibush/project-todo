@@ -1,4 +1,4 @@
-export default class ClientsideValue {
+export default class ClientTokenService {
   private isOk: boolean = typeof window !== "undefined";
 
   getLocalStorage(params: string) {
