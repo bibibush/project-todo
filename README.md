@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 프로젝트 관리형 투두리스트 구현
+### 웹사이트 : https://projecttodo.store
 
-## Getting Started
+<br />
 
-First, run the development server:
+> 작업 진행도와 날짜에 따라서 프로젝트를 관리하는 웹사이트를 구현했습니다. 
+>
+> 이 웹사이트는 작업 진행도 별 프로젝트 생성, 프로젝트 수정 및 삭제, 날짜 별 오름차순 및 내림차순 정렬, 검색, 프로젝트 안 투두리스트 뿐만 아니라 로그인, 회원가입등의 기능이 구현되어있습니다.
+>
+> nextjs의 서버컴포넌트와 react query의 하이드레이션을 사용해 빠르게 데이터를 불러올 수 있도록 하고 react-hook-form을 사용해 로그인 또는 프로젝트 생성 시 유효성 검사를 구현하는 컴포넌트를 구현 및 재사용하는 등, react와 next의 특징을 살리는 방향으로 프로젝트를 구현했습니다.
+>
+>  데이터베이스와 ORM은 postgresql, prisma를 사용했고 docker, nginx, aws ec2를 사용해 프로젝트를 배포했습니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 사용 기술
+- Next.js
+- Auth.js
+- Postgresql
+- Prisma
+- Tanstack Query
+- Shadcn ui(tailwindcss)
+- React-Hook-Form
+- Docker
+- Nginx
+- Aws EC2
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 사용 가이드
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 로그인 및 메인 페이지
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+웹사이트에 접속하면 제일 첫 페이지는 로그인 페이지입니다. nextjs의 병렬 라우트를 사용해 사용자 인증이 되지 않는 상태이면, 메인 페이지가 아닌 로그인 페이지를 보여주도록 설정했습니다.
+![스크린샷 2025-02-20 234833](https://github.com/user-attachments/assets/096cbedd-f40e-4183-8094-1c0725f0fcd3)
+기본 아이디와 기본 비밀번호를 사용해서 로그인 하실 수 있습니다. 인증 방식은 auth.js를 사용한 JWT방식으로 구현했습니다.
 
-## Learn More
+로그인을 하시면
+![스크린샷 2025-02-20 235241](https://github.com/user-attachments/assets/0394121c-b602-4e4e-b29c-87ced328db34)
+메인 페이지가 나오게 됩니다.
+메인 페이지에는 진행도 카테고리가 있고 카테고리 별 프로젝트 카드들이 있습니다. 프로젝트 카드는 제목과 간단한 설명, 그리고 프로젝트가 언제까지인지 알 수 있는 날짜를 가지고 있습니다.
 
-To learn more about Next.js, take a look at the following resources:
+이 프로젝트 카드들은 기본적으로 날짜 별 오름차순이 되어있습니다. 날짜 별 내림차순으로 순서를 변경할 수도 있습니다. 정렬 및 검색 기능 설명에서 다시 설명드리겠습니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+메인 페이지 우측 상단에는 사용자의 이름이 적혀있는 박스가 있습니다. 이 박스를 클릭하시면 로그아웃을 할 수 있는 드롭박스가 나옵니다.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+<br />
 
-## Deploy on Vercel
+### 프로젝트 생성, 읽기, 수정, 삭제
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+프로젝트 생성은 두 가지 방법이 있습니다. 메인 페이지에서 '새 프로젝트 생성' 버튼을 누르시거나 진행도 카테고리 헤더의 ...을 누르시면 생성하기 드롭박스 메뉴가 나오는데 이 메뉴를 클릭해서 생성할 수 있습니다.
+![스크린샷 2025-02-21 000349](https://github.com/user-attachments/assets/87a04c19-a3c8-4031-b854-37af90608e1d)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+그러면 생성 페이지로 이동합니다.
+![스크린샷 2025-02-21 000618](https://github.com/user-attachments/assets/f5d2827c-301a-46f0-a659-385910dbdb91)
+프로젝트 생성 페이지에는 제목과 간단한 설명을 적을 수 있는 폼이 있습니다. 제목은 필수 입력입니다.
+
+밑에는 체크리스트라고 적혀있는 투두리스트가 있습니다. 기본으로 '새로 할 일'이라는 리스트가 적혀있습니다.
+이 텍스트가 적혀있는 영역은 input요소입니다. 그러므로 바로 수정을 하실 수 있습니다.
+
+추가하기 버튼을 누르시거나 리스트에 있는 휴지통 버튼을 누르시면 리스트를 추가하거나 제거 할 수 있습니다.
+
+옆에는 진행도를 볼 수 있는 스텝이 있습니다. '새 프로젝트 생성' 버튼을 눌러서 생성하기 페이지에 진입하면 기본적으로 TODO진행도가 선택되어 있습니다. 스텝 버튼을 눌러서 진행도를 수정할 수 있습니다.
+
+카테고리 헤더의 생성하기 드롭박스 메뉴를 통해서 페이지에 진입하면 해당하는 카테고리의 진행도가 자동으로 선택되어 있습니다. 물론 진행도를 수정할 수 있습니다.
+
+다음은 달력입니다.
+프로젝트가 어떤 날짜 까지 완료되어야 하는지 선택하는데 사용합니다. 기본적으로 오늘 날짜의 일주일 뒤 날짜가 선택되어 있습니다.
+
+저장 버튼을 클릭하여 프로젝트를 생성할 수 있습니다.
+
+<br />
+
+프로젝트의 읽기 및 수정은 같은 페이지에서 할 수 있습니다.
+메인 페이지의 프로젝트 카드를 클릭하면 해당 프로젝트의 페이지로 이동합니다. 페이지의 구성은 생성 페이지와 동일합니다.
+다만 선택 된 프로젝트의 내용들이 보여지게 됩니다. 예를 들어, 프로젝트의 제목 또는 체크리스트가 전의 저장된 상태 그대로 보여지게 됩니다.
+
+프로젝트의 삭제는 메인프로젝트의 프로젝트 카드에 있는 ...버튼을 누르면 '프로젝트 삭제'메뉴가 나옵니다. 이 메뉴를 클릭해서 프로젝트를 삭제할 수 있습니다.
+
+<br />
+
+### 프로젝트 진행도 변경
+
+프로젝트 확인 및 수정 페이지에서 스텝 버튼을 눌러서 진행도를 수정할 수 있습니다. 하지만 메인 페이지에서도 바로 프로젝트의 진행도 간 이동이 가능합니다.
+
+메인 페이지에서 프로젝트 카드의 ... 버튼을 누르면 '프로젝트 상태 변경' 메뉴가 나옵니다. 이 메뉴를 클릭해서 프로젝트의 진행도를 즉시 수정할 수 있습니다.
+![스크린샷 2025-02-21 004254](https://github.com/user-attachments/assets/3b566092-f77f-44c0-91a7-16fea7206545)
+
+<br />
+
+### 프로젝트 정렬 및 검색
+
+프로젝트 카드들은 날짜를 기준으로 오름차순으로 기본 정렬 되어 있습니다. 
+진행도 카테고리 헤더의 ...버튼을 클릭하시면 '날짜 내림차순으로 정렬'이라는 메뉴가 나옵니다.
+![스크린샷 2025-02-21 000349](https://github.com/user-attachments/assets/87a04c19-a3c8-4031-b854-37af90608e1d)
+이 메뉴를 누르시면 프로젝트 카드들이 날짜 별로 내림차순으로 정렬되고 메뉴는 '날짜 오름차순으로 정렬'로 바뀌게 됩니다.
+한번 더 누르시면 다시 오름차순으로 정렬됩니다.
+
+<br />
+
+메인 페이지에는 프로젝트 검색을 할 수 있는 input요소가 있습니다.
+![스크린샷 2025-02-20 235241](https://github.com/user-attachments/assets/0394121c-b602-4e4e-b29c-87ced328db34)
+이 input요소에 특정한 단어를 검색하면, 프로젝트의 제목 또는 설명이 이 단어를 포함하는 프로젝트들만 보여주게 됩니다.
+
+검색을 할 때 change이벤트를 debounce로 감싸서 리렌더링을 줄이는 방식으로 렌더링 최적화를 진행했습니다.
+
+<br />
+
+## 개선하고 싶은 점
+
+프로젝트 카드들을 버튼을 사용해서 진행도 간 이동을 쉽게 할 수도 있지만, 프로젝트 카드를 드래그 해서 바로 이동하고 싶은 카테고리로 드랍할 수 있다면 훨씬 완성도있는 프로젝트가 되겠다고 생각했습니다.
+
+react에는 이러한 기능을 구현할 수 있는 라이브러리들이 있는데 아직 사용을 안해봤습니다. 이런 라이브러리들에 대한 공부를 하고 사용한다면 사용자에게 더 높은 만족감을 주는 웹사이트가 될 것입니다.
+
+사실, 기회가 된다면 라이브러리를 사용하지 않고 이런 기능을 구현해보는 것도 좋은 공부가 될 것 같습니다.
